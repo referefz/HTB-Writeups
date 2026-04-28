@@ -119,6 +119,68 @@ Cool, let's see each one
 
 Now, I downloaded the `backup.tar` folder and extracted it, and found ***four files: index.php - lib.php - photos.php - upload.php*** written in PHP for the structure of this website. I examined them all, and here's what I found:
 
+📑 `upload.php`
+
+```PHP
+foreach ($validext as $vext) {
+  if (substr_compare($myFile["name"], $vext, -strlen($vext)) === 0) {
+    $valid = true;
+  }
+}
+```
+* **Double Extension Bypass:** The code uses a whitelist of these extensions (.jpg, .png, .gif, .jpeg). However, the vulnerability lies in the fact that the code compares the filename's ending to the number of characters of allowed extensions like `.png`, allowing me to upload a file with a dual extension like `shell.php.png`
+
+```PHP
+$name = str_replace('.','_',$_SERVER['REMOTE_ADDR']).'.'.$ext;
+```
+* **File Naming:** The code changes the uploaded file name based on the IP address used (replacing dots with underscores). This helps me easily determine the final path of our malicious file.
+
+```PHP
+if (!(check_file_type($_FILES["myFile"]) && filesize($_FILES['myFile']['tmp_name']) < 60000)) {
+      echo '<pre>Invalid image file.</pre>';
+      displayform();
+}
+
+# Note: check_file_type fun was retrieved from a lib.php like this:
+
+function check_file_type($file) {
+  $mime_type = file_mime_type($file); 
+  if (strpos($mime_type, 'image/') === 0) { 
+      return true; 
+  } else {
+      return false;
+  }  
+}
+```
+* **MIME-Type Check:** The code relies on what the browser sends in the header (Content-Type) must be starting with `image/`. Since we can modify it with Burp Suite to `image/png`, while the file is PHP, the server is fooled... but it will NOT work alone because of `file_mime_type` function below..
+
+
+📑 `lib.php`
+
+```PHP
+function file_mime_type($file) {
+  if (function_exists('finfo_file')) {
+    $finfo = finfo_open(FILEINFO_MIME); 
+    if (is_resource($finfo)) {
+      $mime = @finfo_file($finfo, $file['tmp_name']); 
+      finfo_close($finfo);
+    }
+  }
+}
+```
+* **file_mime_type function:** This function uses the PHP library to verify that the file is indeed an image by looking only at the Magic Bytes (the first bytes of the file). Therefore now, I can place the PNG fingerprint at the beginning of my PHP file, and it will be allowed to pass through.
+
+
+📑 `photos.php`
+
+```PHP
+foreach (scandir($path) as $file) {
+  if (in_array($file, $ignored)) continue;
+  $files[$file] = filemtime($path. '/' . $file);
+}
+```
+* **File display:** Locates the uploads folder and displays (executes/runs) the files.
+
 
 
 🚀 Phase 2: Initial Access (Exploitation)
