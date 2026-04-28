@@ -234,7 +234,7 @@ Upload ***hi.php.png*** in `/upload.php`, open `\photos.php` to load the code:
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/7-photos.png)
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/8-apache-user.png)
 
-finally landing! 🛬 I'm apache user, lets countinue
+finally landing! 🛬 I'm apache user landing in `/var/www/html/uploads` (I'll use it later), lets countinue
 
 ---
 
@@ -244,9 +244,54 @@ Current User: apache
 
 Target User: guly
 
+
 I discover the user "guly" by listing all dirictoris in the `/home`, and listing all files there:
 
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/9-discover-users.png)
+
+I examined some interesting files, and here's what I found:
+
+📑 `check_attack.php`
+
+```Diff
+<?php
+require '/var/www/html/lib.php';
+$path = '/var/www/html/uploads/';
+$logpath = '/tmp/attack.log';
+$to = 'guly';
+$msg= '';
+$headers = "X-Mailer: check_attack.php\r\n";
+
+$files = array();
+$files = preg_grep('/^([^.])/', scandir($path));
+
+foreach ($files as $key => $value) {
+        $msg='';
+  if ($value == 'index.html') {
+        continue;
+  }
+  #echo "-------------\n";
+
+  #print "check: $value\n";
+  list ($name,$ext) = getnameCheck($value);
+  $check = check_ip($name,$value);
+
+  if (!($check[0])) {
+    echo "attack!\n";
+    # todo: attach file
+    file_put_contents($logpath, $msg, FILE_APPEND | LOCK_EX);
+
+    exec("rm -f $logpath");
+-   exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");
+    echo "rm -f $path$value\n";
+    mail($to, $msg, $msg, $headers, "-F$value");
+  }
+}
+
+?>
+```
+
+* **Command Injection:** The script insecurely concatenates the $value variable (filename) directly into a system command without any sanitization, allowing an attacker to execute arbitrary commands by crafting a malicious filename.
 
 
 
