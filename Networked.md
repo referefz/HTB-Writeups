@@ -7,9 +7,9 @@
 | Attribute | Details |
 | :--- | :--- |
 | **Platform** | HackTheBox |
-| **Category** | Web Application - Injections - Source Code Analysis |
 | **Difficulty** | 🟢 Easy |
 | **OS** | 🐧 Linux |
+| **Mode** | 🧭 Guided Mode |
 | **Date** | 2026-04-28 |
 
 ---
@@ -20,24 +20,44 @@
 ---
 
 ## 🛠️ Tools Used
-* **Enumeration:** `Nmap`, `Gobuster`, `FFUF`
-* **Exploitation:** `Burp Suite`, `Exiftool`
-* **Post-Exploitation:** `nc`, `python3`, `stty`
+`Your mind and eyes!!`, `Nmap`, `dirb`, `hexcurse`, `nc`
 
 ---
 
-## 🔍 Phase 1: Enumeration & Reconnaissance
+## 🔍 1: Reconnaissance & Enumeration
 
-### 1. Port Scanning
+Attacker = 10.10.14.34
+
+Target = 10.129.26.10
+
+### 1.1 Port Scanning
 ```bash
-sudo nmap -sV -sC -A -T4 <Target_IP>
-Findings:
+sudo nmap -sS -p- -A -T4 10.129.26.10
+```
+🧐 Findings:
 
-Port 80 (HTTP): Apache 2.4.6
+```
+PORT    STATE  SERVICE VERSION
+22/tcp  open   ssh     OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 22:75:d7:a7:4f:81:a7:af:52:66:e5:27:44:b1:01:5b (RSA)
+|   256 2d:63:28:fc:a2:99:c7:d4:35:b9:45:9a:4b:38:f9:c8 (ECDSA)
+|_  256 73:cd:a0:5b:84:10:7d:a7:1c:7c:61:1d:f5:54:cf:c4 (ED25519)
+80/tcp  open   http    Apache httpd 2.4.6 ((CentOS) PHP/5.4.16)
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+|_http-server-header: Apache/2.4.6 (CentOS) PHP/5.4.16
+443/tcp closed https
+Device type: general purpose|router|WAP|media device
+Running (JUST GUESSING): Linux 3.X|4.X|2.6.X|5.X (98%), MikroTik RouterOS 7.X (91%), Asus embedded (88%), Amazon embedded (88%)
+OS CPE: cpe:/o:linux:linux_kernel:3 
+```
+> [!NOTE]
+> 
+> Which version of Apache is running on the target?
+> 
+> 2.4.6
 
-Port 22 (SSH): OpenSSH 7.4
-
-2. Directory Brute-forcing
+1.2 Directory Brute-forcing
 Bash
 gobuster dir -u http://<Target_IP> -w /usr/share/wordlists/dirb/common.txt
 [!IMPORTANT]
