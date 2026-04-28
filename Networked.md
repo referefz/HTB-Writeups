@@ -96,12 +96,19 @@ GENERATED WORDS: 4612
 + http://10.129.26.10/index.php (CODE:200|SIZE:229)                                                                
 ==> DIRECTORY: http://10.129.26.10/uploads/ 
 ```
-- [ ] / > Normal welcoming web page.
-      [.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/2-web-page.png)
-- [ ] /uploads/ > No thing interesting.
-- [ ] /cgi-bin/ > Forbidden URL.
-- [ ] /backup/ > Starting point !
-      [.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
+Cool, let's see each one
+
+
+`/` > Normal welcoming web page.
+
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/2-web-page.png)
+`/uploads/` > No thing interesting.
+
+`/cgi-bin/` > Forbidden URL.
+
+`/backup/` > Starting point !
+
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
 
 
 > [!NOTE]
@@ -110,8 +117,9 @@ GENERATED WORDS: 4612
 > 
 > /backup
 
+Now, I downloaded the `backup.tar` folder and extracted it, and found ***four files: index.php - lib.php - photos.php - upload.php*** written in PHP for the structure of this website. I examined them all, and here's what I found:
 
-Discovered /uploads/ and /lib.php which gave a hint about the file upload logic.
+
 
 🚀 Phase 2: Initial Access (Exploitation)
 Vulnerability: [e.g., Insecure File Upload]
