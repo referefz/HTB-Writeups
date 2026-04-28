@@ -57,10 +57,59 @@ OS CPE: cpe:/o:linux:linux_kernel:3
 > 
 > 2.4.6
 
-1.2 Directory Brute-forcing
-Bash
-gobuster dir -u http://<Target_IP> -w /usr/share/wordlists/dirb/common.txt
-[!IMPORTANT]
+### 1.2 Directory Brute-forcing
+```bash
+sudo nmap --script vuln -p80 10.129.26.10
+dirb http://10.129.26.10
+```
+🧐 Findings:
+
+```
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+|_http-trace: TRACE is enabled
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+| http-enum: 
+|   /backup/: Backup folder w/ directory listing
+|   /icons/: Potentially interesting folder w/ directory listing
+|_  /uploads/: Potentially interesting folder
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Sat Apr 25 12:03:42 2026
+URL_BASE: http://10.129.26.10/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://10.129.26.10/ ----
+==> DIRECTORY: http://10.129.26.10/backup/                                                                         
++ http://10.129.26.10/cgi-bin/ (CODE:403|SIZE:210)                                                                 
++ http://10.129.26.10/index.php (CODE:200|SIZE:229)                                                                
+==> DIRECTORY: http://10.129.26.10/uploads/ 
+```
+- [ ] / > Normal welcoming web page.
+      [.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/2-web-page.png)
+- [ ] /uploads/ > No thing interesting.
+- [ ] /cgi-bin/ > Forbidden URL.
+- [ ] /backup/ > Starting point !
+      [.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
+
+
+> [!NOTE]
+> 
+> What is the relative path of the directory that contains the backup file on the webserver?
+> 
+> /backup
+
 
 Discovered /uploads/ and /lib.php which gave a hint about the file upload logic.
 
