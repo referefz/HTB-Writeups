@@ -335,13 +335,13 @@ Current User: guly
 
 Target User: root
 
-As seen above, I checke guly permissions with `sudo -l`, and notice the binary `/usr/local/sbin/changename.sh` that can be run with root privs without a password.
+As seen above, I check guly permissions with `sudo -l`, and notice the binary `/usr/local/sbin/changename.sh` that can be run with root privs without a password.
 So, let's see what's inside:
 
 📑 `changename.sh`
 
 ```Diff
-- #!/bin/bash -p
+#!/bin/bash -p
 cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
 DEVICE=guly0
 ONBOOT=no
@@ -363,18 +363,29 @@ done
   
 - /sbin/ifup guly0
 ```
-* **Cronjob:** The system includes a scheduled task (Cronjob) that runs with the privileges of the user guly and executes the `check_attack.php` script every [3 minutes](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/crontab-2.png) to check the uploads folder. I can exploit this to escalate my privileges to be user guly!
 
-Exploit: Injected /bin/bash through the BOOTPROTO variable.
+* **Command Injection:** In CentOS/RHEL systems, when the `ifup` command launches the network interface, it reads the file `/etc/sysconfig/network-scripts/ifcfg-guly`. Therefore, the vulnerability lies in executing the contents of the `ifcfg-guly` network configuration file. The script allows spaces in variables despite the presence of `regexp`, and this allows us to inject a system command after a space into any value, such as `BOOTPROTO`. Now, when calling `/sbin/ifup` for the interface, the system will treat the second word as an executable command, not just text, and will execute it with root privileges.
 
-🏁 Conclusion & Mitigation
-User Flag: ********************************
+Let's run it, and inject `/bin/bash` through `BOOTPROTO` variable :
 
-Root Flag: ********************************
+```bash
+sudo /usr/local/sbin/changename.sh
+```
 
-Lessons Learned:
-Always sanitize user input in system-level scripts.
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/13-root-flag.png)
 
-Implement strict extension whitelisting for file uploads.
+
+FINALLY ! I'm root user!!💥
+
+---
+
+## 🏁 5: Conclusion
+
+
+User Flag: 72b837cf5b46d8789cf6b69882d762d6
+
+Root Flag: 0b9eba9fbf03fccf8eaf76491d5f8fa2
+
+We shouled always sanitize user input in system-level scripts, and implement strict extension whitelisting for file uploads.
 
 Created with 💜 by Reef
