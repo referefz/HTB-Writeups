@@ -1,58 +1,27 @@
-# 🚩 My HackTheBox Write-ups
+# 🚩 HackTheBox Write-ups
 
-Welcome to my penetration testing repository!! This repository documents my journey in learning and solving 100 machine for the HackTheBox platform.
-
----
-
-### 👤 About Me
-* **Name:** Reef Alshehri
-* **X:** Cybersecurity Student 🛡️
-* **Focus:** Penetration Testing | Digital Forensics | Web Security
+Welcome to my repository!!🚀 This repository documents my journey in learning and solving 100 machine for the HackTheBox platform.
 
 ---
 
 ### 📂 Machines Write-ups
 
-هنا أضع التقارير التفصيلية لكل ماكينة قمت باختراقها، مصنفة حسب المنصة والصعوبة:
+Here I place detailed reports for each machine I hacked, categorized by platform, difficulty, and solution method:
 
-| Machine Name | Platform | OS | Difficulty | Write-up Link |
+
+| Machine Name | OS | Difficulty | Mode | Write-up Link |
 | :--- | :--- | :--- | :--- | :--- |
-| **Networked** | HackTheBox | 🐧 Linux | 🟢 Easy | [View Report](./Networked.md) |
-| *(Next Machine)* | HTB | - | - | *Coming Soon* |
+| **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
+| *(Next Machine)* | - | - | - | *Coming Soon* |
+
+### 🎯 My Current Goal: Road to 100 HTB Machines
+### 1 / 100
 
 ---
 
-### 🛠️ Toolset & Skills
-
-أستخدم في هذه التقارير مجموعة متنوعة من الأدوات والتقنيات لتجاوز الدفاعات:
-
-* **Enumeration:** `Nmap`, `GoBuster`, `Feroxbuster`
-* **Exploitation:** `Burp Suite`, `Metasploit`, `Reverse Shells`
-* **PrivEsc:** `LinPeas`, `SUID Manipulation`, `Cronjobs Exploitation`
-* **Forensics:** `Volatility`, `Autopsy`, `Wireshark`
-
+> **⚠️ Disclaimer:** All reports here are for educational purposes only. The goal is to document technical skills and understand how vulnerabilities work in order to better protect systems.
+> 
 ---
+Created with 💜 by Reef
 
-### 🚀 Key Vulnerabilities Explored
-
-خلال هذه التحديات، قمت باستغلال العديد من الثغرات الأمنية، منها:
-- **Web:** File Upload Bypass, Command Injection, SQLi.
-- **System:** Privilege Escalation, Misconfigured Services, Kernel Exploits.
-- **Logic:** Insecure Direct Object References (IDOR), Broken Authentication.
-
----
-
-### 📈 Methodology
-أتبع في كل تقرير منهجية منظمة لضمان الفهم الكامل للثغرة:
-1. **Reconnaissance:** جمع المعلومات عن الهدف.
-2. **Scanning:** فحص المنافذ والخدمات المفتوحة.
-3. **Exploitation:** الوصول الأولي للنظام (Initial Foothold).
-4. **Privilege Escalation:** تصعيد الصلاحيات (Horizontal & Vertical).
-5. **Post-Exploitation:** جمع الأعلام والدروس المستفادة.
-
----
-
-> **⚠️ Disclaimer:** جميع التقارير هنا لأغراض تعليمية فقط. الهدف هو توثيق المهارات التقنية وفهم كيفية عمل الثغرات الأمنية للتمكن من حماية الأنظمة بشكل أفضل.
-
----
 *Last Updated: 2026-04-29*
