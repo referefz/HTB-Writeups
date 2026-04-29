@@ -1,6 +1,6 @@
 # 🚩 HackTheBox Write-ups
 
-Welcome to my repository!!🚀 This repository documents my journey in learning and solving 100 machine for the HackTheBox platform.
+Welcome to my repository!!🚀 This repository documents my journey in learning and solving machines in HackTheBox platform.
 
 ---
 
