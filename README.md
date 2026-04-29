@@ -1,12 +1,12 @@
 # 🚩 My HackTheBox Write-ups
 
-مرحباً بك في مستودع تقارير الاختراق الخاصة بي. هذا المستودع يوثق رحلتي في تعلم الأمن السيبراني واختبار الاختراق من خلال حل الماكينات والتحديات على منصات مثل **HackTheBox** و **TryHackMe**.
+Welcome to my penetration testing repository!! This repository documents my journey in learning and solving 100 machine for the HackTheBox platform.
 
 ---
 
 ### 👤 About Me
 * **Name:** Reef Alshehri
-* **Role:** Cybersecurity Student 🛡️
+* **X:** Cybersecurity Student 🛡️
 * **Focus:** Penetration Testing | Digital Forensics | Web Security
 
 ---
