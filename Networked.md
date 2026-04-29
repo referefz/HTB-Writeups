@@ -237,7 +237,7 @@ Let's open a listener on port 9000 with **netcat (nc)** tool and specifying the 
 nc -lvnp 9000
 ```
 
-Upload ***hi.php.png*** in `/upload.php`, open `\photos.php` to load the code:
+Upload ***hi.php.png*** in `/upload.php`, open `/photos.php` to load the code:
 
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/4-upload.png)
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/6-upload-successfully.png)
