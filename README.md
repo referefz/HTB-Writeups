@@ -11,10 +11,15 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 
 | Machine Name | OS | Difficulty | Mode | Write-up Link |
 | :--- | :--- | :--- | :--- | :--- |
+| **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | *Coming Soon* |
 | **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
 | *(Next Machine)* | - | - | - | *Coming Soon* |
 
-### 🎯 My Current Goal: Road to 100 HTB Machines
+
+### 🎯 The Road to 100 HTB Machines
+### 2 / 100
+
+### 📝 The Road to 100 HTB Reports
 ### 1 / 100
 
 ---
