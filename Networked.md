@@ -435,4 +435,4 @@ We shouled always sanitize user input in system-level scripts, and implement str
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/14-pwn3d!.png)
 
 
-Created with 💜 by Reef
+Documented with 💜 by The Inquirer, Reef
