@@ -3,7 +3,7 @@
 
 ![Banner](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/1-banner.png)
 
-## 📝 General Information
+## 📝 General Informations
 | Attribute | Details |
 | :--- | :--- |
 | **Platform** | HackTheBox |
