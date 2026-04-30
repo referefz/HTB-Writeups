@@ -27,6 +27,6 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 > **⚠️ Disclaimer:** All reports here are for educational purposes only. The goal is to document technical skills and understand how vulnerabilities work in order to better protect systems.
 > 
 ---
-Documented with 💜 by The Inquirer, Reef
+Created with 💜 by the inquirer, Reef
 
 *Last Updated: 2026-04-29*
