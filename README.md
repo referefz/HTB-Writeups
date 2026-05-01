@@ -1,10 +1,11 @@
-# 🚩 HackTheBox Write-ups
+# HackTheBox Write-ups
 
-Welcome to my repository!!🚀 This repository documents my journey in learning and solving machines in HackTheBox platform.
+Welcome to Reef's repository!! 
+I’m glad you’re here. This space is more than just a collection of write-ups; it’s a personal record of my curiosity in action. Here, I document every challenge I’ve faced and every lesson I’ve learned while navigating the machines of HackTheBox. I hope my journey inspires yours✨..
 
 ---
 
-### 📂 Machines Write-ups
+### Machines Write-ups
 
 Here I place detailed reports for each machine I hacked, categorized by platform, difficulty, and solution method:
 
@@ -24,7 +25,7 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 
 ---
 
-> **⚠️ Disclaimer:** All reports here are for educational purposes only. The goal is to document technical skills and understand how vulnerabilities work in order to better protect systems.
+> **Disclaimer:** All reports here are for educational purposes only. The goal is to document technical skills and understand how vulnerabilities work in order to better protect systems.
 > 
 ---
 Created with 💜 by **The Inquirer, Reef**
