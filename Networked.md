@@ -16,11 +16,13 @@
 ---
 
 ## Executive Summary
-*On Networked, The breach is began with a MIME-type bypass using a crafted Polyglot PNG to crack open the web layer for an initial foothold. The momentum shifted to a stealthy horizontal pivot, weaponizing a Command Injection via a filename to hijack a vulnerable Cronjob and seize control of the user guly. The final strike was a clinical exploitation of a root-level bash script, where a misconfigured network variable was the key to shattering the system's last defense and claiming the ROOT throne! 🚩*
+*Hello everyone!! This is Reef the Inquirer✨. With my coffee ready, and my curiosity fueled, I set out to unravel this Networked challenge. The journey truly began with...*
+
+*a MIME-type bypass using a crafted Polyglot PNG to crack open the web layer for an initial foothold. The momentum shifted to a stealthy horizontal pivot, weaponizing a Command Injection via a filename to hijack a vulnerable Cronjob and seize control of the user guly. The final strike was a clinical exploitation of a root-level bash script, where a misconfigured network variable was the key to shattering the system's last defense and claiming the ROOT throne! 🚩*
 
 ---
 
-## 🛠️ Tools Used
+## Tools Used
 `Your mind and eyes!!`, `Nmap`, `dirb`, `xxd`, `hexcurse`, `nc`
 
 ---
@@ -245,7 +247,7 @@ Upload ***hi.php.png*** in `/upload.php`, open `/photos.php` to load the code:
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/7-photos.png)
 ![](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/8-apache-user.png)
 
-finally landing! 🛬 I'm apache user landing in `/var/www/html/uploads` (I'll use it later), lets countinue
+finally landing !! I'm apache user landing in `/var/www/html/uploads` (I'll use it later), lets countinue
 
 ---
 
