@@ -3,7 +3,7 @@
 
 ![Banner](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/1-banner.png)
 
-## 📝 General Informations
+## General Informations
 | Attribute | Details |
 | :--- | :--- |
 | **Platform** | HackTheBox |
@@ -15,7 +15,7 @@
 
 ---
 
-## 🎯 Executive Summary
+## Executive Summary
 *On Networked, The breach is began with a MIME-type bypass using a crafted Polyglot PNG to crack open the web layer for an initial foothold. The momentum shifted to a stealthy horizontal pivot, weaponizing a Command Injection via a filename to hijack a vulnerable Cronjob and seize control of the user guly. The final strike was a clinical exploitation of a root-level bash script, where a misconfigured network variable was the key to shattering the system's last defense and claiming the ROOT throne! 🚩*
 
 ---
