@@ -34,6 +34,9 @@ Attacker = 10.10.17.105
 Target = 10.129.1.254
 
 ### 1.1 Port Scanning
+
+According to the first task, I chose to scan all TCP ports using the option `-pT:1-65535`
+
 ```BASH
 sudo nmap -sS -A -v -pT:1-65535 -T4 10.129.1.254
 ```
@@ -42,64 +45,37 @@ sudo nmap -sS -A -v -pT:1-65535 -T4 10.129.1.254
 ```
 Discovered open port 80/tcp on 10.129.1.254
 Discovered open port 22/tcp on 10.129.1.254
-PORT STATE SERVICE VERSION
-22/tcp open ssh OpenSSH 7.2 (FreeBSD 20161230; protocol 2.0)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.2 (FreeBSD 20161230; protocol 2.0)
 | ssh-hostkey:
-I 2048 e3:3b:7d:3c:8f:4b:8c:f9:cd:7f:d2:3a:ce:2d:ff:bb (RSA) tl 256 4c:e8:c6:02:bd:fc:83:ff:c9:80:01:54:7d:22:81:72 (ECDSA) L 256 0b:8f:d5:71:85:90:13:85:61:8b:eb:34:13:5f:94:3b (ED25519) t80/tcp open http Apache httpd 2.4.29 ((FreeBSD) PHP/5.6.32)
-t |_http-title: Site doesn't have a title (text/html; charset=UTF-8). http-methods:
-t|_ Supported Methods: GET HEAD POST OPTIONS
+|   2048 e3:3b:7d:3c:8f:4b:8c:f9:cd:7f:d2:3a:ce:2d:ff:bb (RSA)
+|   256 4c:e8:c6:02:bd:fc:83:ff:c9:80:01:54:7d:22:81:72 (ECDSA)
+|_  256 0b:8f:d5:71:85:90:13:85:61:8b:eb:34:13:5f:94:3b (ED25519)
+80/tcp   open  http    Apache httpd 2.4.29 ((FreeBSD) PHP/5.6.32)
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+| http-methods:
+|_  Supported Methods: GET HEAD POST OPTIONS
 |_http-server-header: Apache/2.4.29 (FreeBSD) PHP/5.6.32
 Aggressive OS guesses: FreeBSD 11.0-RELEASE - 12.0-CURRENT (97%)
 ```
 
 
 <details>
-  <summary>🟢 Task 1: Which version of Apache is running?</summary>
+  <summary>🟢 Task 1: How many TCP ports are accessible on Poison?</summary>
   <br>
-  2.4.6
+  2
 </details>
 
-### 1.2 Directory Brute-forcing
+### 1.2 Directory Discovery
 ```BASH
-sudo nmap --script vuln -p80 10.129.26.10
-```
-```BASH
-dirb http://10.129.26.10
+feroxbuster -u http://10.129.1.254 -w /usr/share/wordlists/seclists/Discovery/Web-Content/common_directories.txt
 ```
 🧐 Findings:
 
-```
-PORT   STATE SERVICE
-80/tcp open  http
-|_http-dombased-xss: Couldn't find any DOM based XSS.
-|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
-|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
-|_http-trace: TRACE is enabled
-|_http-csrf: Couldn't find any CSRF vulnerabilities.
-| http-enum: 
-|   /backup/: Backup folder w/ directory listing
-|   /icons/: Potentially interesting folder w/ directory listing
-|_  /uploads/: Potentially interesting folder
-```
 ```Bash
------------------
-DIRB v2.22    
-By The Dark Raver
------------------
-
-START_TIME: Sat Apr 25 12:03:42 2026
-URL_BASE: http://10.129.26.10/
-WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-
------------------
-
-GENERATED WORDS: 4612                                                          
-
----- Scanning URL: http://10.129.26.10/ ----
-==> DIRECTORY: http://10.129.26.10/backup/                                                                         
-+ http://10.129.26.10/cgi-bin/ (CODE:403|SIZE:210)                                                                 
-+ http://10.129.26.10/index.php (CODE:200|SIZE:229)                                                                
-==> DIRECTORY: http://10.129.26.10/uploads/ 
+200      GET       4l       30w      321c http://10.129.1.254/browse.php
+200      GET      12l       30w      289c http://10.129.1.254/
+[####################] - 2s        12/12      0s      found:2      errors:0
 ```
 
 ***Cool, let's see each one:***
