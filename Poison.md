@@ -35,7 +35,7 @@ Target = 10.129.1.254
 
 ### 1.1 Port Scanning
 
-According to the first task, I chose to scan all TCP ports using the option `-pT:1-65535`
+According to the first task, I choose to scan all TCP ports using the option `-pT:1-65535`
 
 ```BASH
 sudo nmap -sS -A -v -pT:1-65535 -T4 10.129.1.254
@@ -84,23 +84,36 @@ feroxbuster -u http://10.129.1.254 -w /usr/share/wordlists/seclists/Discovery/We
 `/` > Web page for testing local PHP scripts.
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/2-web-page.png)
-It also reveales some interesting PHP files we shouled test it:
+It also reveales some interesting PHP files we shouled test them:
   * ini.php > Nothing interesting.
   * info.php > Nothing interesting.
   * phpinfo.php > Usefull to see.
   * listfiles.php > THIS IS IT !!
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/3-listfiles.png)
+We noticed 2 new things.. the first is that the `/` page is sending the script file `listfiles.php` as variable `file=` to the `/browse.php` (which was previously discovered in the Feroxbuster tool) path in the URL. 
+
+<details>
+  <summary>🟢 Task 2: What is the relative path of a PHP script that seems to include other files?</summary>
+  <br>
+  /browse.php
+</details>
+
+The second thing we see new files
+  * . and .. > looks like Path Traversel vuln that will be tested later.
+  * pwdbackup.txt > TXT file that we should check !
+
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/4-pwdbackup.png)
+Hmmmmm easy.. 13 time base64 decoding in [CyberChef](https://gchq.github.io/CyberChef/)
+
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/5-13decode.png)
+Great! we have a password for unknown user yet😂 save `Charix!2#4%6&8(0` we'll use it later.
+
 
 `/browse.php` > Starting point !
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
 
-<details>
-  <summary>🟢 Task 2: What is the relative path of the directory that contains the backup file on the webserver?</summary>
-  <br>
-  /backup
-</details>
 
 Now, I downloaded the `backup.tar` folder and extracted it, and found ***four files: index.php - lib.php - photos.php - upload.php*** written in PHP for the structure of this website. I examined them all, and here's what I found:
 
