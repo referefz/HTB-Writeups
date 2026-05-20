@@ -23,36 +23,33 @@
 ---
 
 ## Tools Used
-`Your mind and eyes!!`, `Nmap`, `dirbuster`, `ssh`, `python`, `unzip`, `vncviewer`
+`Your mind and eyes!!`, `Nmap`, `dirbuster`, `DevTools`, `ssh`, `python`, `unzip`, `netstat`, `vncviewer`
 
 ---
 
 ## 🔍 1: Reconnaissance & Enumeration
 
-Attacker = 10.10.14.34
+Attacker = 10.10.17.105
 
-Target = 10.129.26.10
+Target = 10.129.1.254
 
 ### 1.1 Port Scanning
 ```BASH
-sudo nmap -sS -p- -A -T4 10.129.26.10
+sudo nmap -sS -A -v -pT:1-65535 -T4 10.129.1.254
 ```
 🧐 Findings:
 
 ```
-PORT    STATE  SERVICE VERSION
-22/tcp  open   ssh     OpenSSH 7.4 (protocol 2.0)
-| ssh-hostkey: 
-|   2048 22:75:d7:a7:4f:81:a7:af:52:66:e5:27:44:b1:01:5b (RSA)
-|   256 2d:63:28:fc:a2:99:c7:d4:35:b9:45:9a:4b:38:f9:c8 (ECDSA)
-|_  256 73:cd:a0:5b:84:10:7d:a7:1c:7c:61:1d:f5:54:cf:c4 (ED25519)
-80/tcp  open   http    Apache httpd 2.4.6 ((CentOS) PHP/5.4.16)
-|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
-|_http-server-header: Apache/2.4.6 (CentOS) PHP/5.4.16
-443/tcp closed https
-Device type: general purpose|router|WAP|media device
-Running (JUST GUESSING): Linux 3.X|4.X|2.6.X|5.X (98%), MikroTik RouterOS 7.X (91%), Asus embedded (88%), Amazon embedded (88%)
-OS CPE: cpe:/o:linux:linux_kernel:3 
+Discovered open port 80/tcp on 10.129.1.254
+Discovered open port 22/tcp on 10.129.1.254
+PORT STATE SERVICE VERSION
+22/tcp open ssh OpenSSH 7.2 (FreeBSD 20161230; protocol 2.0)
+| ssh-hostkey:
+I 2048 e3:3b:7d:3c:8f:4b:8c:f9:cd:7f:d2:3a:ce:2d:ff:bb (RSA) tl 256 4c:e8:c6:02:bd:fc:83:ff:c9:80:01:54:7d:22:81:72 (ECDSA) L 256 0b:8f:d5:71:85:90:13:85:61:8b:eb:34:13:5f:94:3b (ED25519) t80/tcp open http Apache httpd 2.4.29 ((FreeBSD) PHP/5.6.32)
+t |_http-title: Site doesn't have a title (text/html; charset=UTF-8). http-methods:
+t|_ Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.29 (FreeBSD) PHP/5.6.32
+Aggressive OS guesses: FreeBSD 11.0-RELEASE - 12.0-CURRENT (97%)
 ```
 
 
