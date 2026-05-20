@@ -10,20 +10,20 @@
 | **Difficulty** | 🟠 Medium |
 | **OS** | 😈 FreeBSD |
 | **Mode** | 🧭 Guided Mode |
-| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (guly)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
-| **Date** | 2026-04-29 |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (charix)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
+| **Date** | 2026-05-20 |
 
 ---
 
 ## Executive Summary
-*Hello everyone!! This is Reef the Inquirer✨. With my coffee ready, and my curiosity fueled, I set out to unravel this Networked challenge. The journey truly began with...*
+*Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity, I dove into the FreeBSD-based os challenge for the first time. This machine was a beautiful lesson in network poisoning.*
 
-*a MIME-type bypass using a crafted Polyglot PNG to crack open the web layer for an initial foothold. The momentum shifted to a stealthy horizontal pivot, weaponizing a Command Injection via a filename to hijack a vulnerable Cronjob and seize control of the user guly. The final strike was a clinical exploitation of a root-level bash script, where a misconfigured network variable was the key to shattering the system's last defense and claiming the ROOT throne! 🚩*
+*A classic Local File Inclusion (LFI) vulnerability in the web page that allowed me to explore the FreeBSD file system and uncover the Apache log paths. I weaponized this LFI to perform a Log Poisoning attack, for Remote Code Execution as the www user. In parallel, discovering a deeply encoded backup file led me to a CyberChef decoding marathon, ultimately revealing the SSH password for the user charix. The final strike involved transferring a locked zip file, unzipping a VNC authentication token locally, and executing a SSH Local Port Forwarding technique to access an internal VNC service and claim the ROOT graphical desktop! 🚩*
 
 ---
 
 ## Tools Used
-`Your mind and eyes!!`, `Nmap`, `dirb`, `xxd`, `hexcurse`, `nc`
+`Your mind and eyes!!`, `Nmap`, `dirbuster`, `ssh`, `python`, `unzip`, `vncviewer`
 
 ---
 
@@ -251,11 +251,11 @@ finally landing !! I'm apache user landing in `/var/www/html/uploads` (I'll use 
 
 ---
 
-## 🧠 3: Privilege Escalation (guly)
+## 🧠 3: Privilege Escalation (charix)
 
-Current User: apache
+Current User: www
 
-Target User: guly
+Target User: charix
 
 
 I discover the user "guly" by listing all dirictoris in the `/home`, and listing all files there:
