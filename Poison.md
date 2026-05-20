@@ -10,7 +10,7 @@
 | **Difficulty** | 🟠 Medium |
 | **OS** | 😈 FreeBSD |
 | **Mode** | 🧭 Guided Mode |
-| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (charix)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: LFI & Log Poisoning](#-2-initial-foothold) <br> [3: Privilege Escalation (charix)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
 | **Date** | 2026-05-20 |
 
 ---
@@ -200,7 +200,7 @@ foreach (scandir($path) as $file) {
 
 ---
 
-## 🚪 2: Initial Foothold
+## 🚪 2: LFI & Log Poisoning
 
 We define that's the system web vulnerability is **Insecure File Upload**
 
