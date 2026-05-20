@@ -18,7 +18,7 @@
 ## Executive Summary
 *Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity, I dove into the FreeBSD-based os challenge for the first time. This machine was a beautiful lesson in network poisoning.*
 
-*A classic Local File Inclusion (LFI) vulnerability in the web page that allowed me to explore the FreeBSD file system and uncover the Apache log paths. I weaponized this LFI to perform a Log Poisoning attack, for Remote Code Execution as the www user. In parallel, discovering a deeply encoded backup file led me to a CyberChef decoding marathon, ultimately revealing the SSH password for the user charix. The final strike involved transferring a locked zip file, unzipping a VNC authentication token locally, and executing a SSH Local Port Forwarding technique to access an internal VNC service and claim the ROOT graphical desktop! 🚩*
+*A classic Local File Inclusion (LFI) and Path Traversal vulnerabilities in the web page that allowed me to explore the FreeBSD file system and uncover the Apache log paths. I weaponized this LFI to perform a Log Poisoning attack, for Remote Code Execution as the www user. In parallel, discovering a deeply encoded backup file led me to a CyberChef decoding marathon, ultimately revealing the SSH password for the user charix. The final strike involved transferring a locked zip file, unzipping a VNC authentication token locally, and executing a SSH Local Port Forwarding technique to access an internal VNC service and claim the ROOT graphical desktop! 🚩*
 
 ---
 
