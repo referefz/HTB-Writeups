@@ -66,7 +66,7 @@ Aggressive OS guesses: FreeBSD 11.0-RELEASE - 12.0-CURRENT (97%)
   2
 </details>
 
-### 1.2 Directory Discovery
+### 1.2 Directory & File Discovery
 ```BASH
 feroxbuster -u http://10.129.1.254 -w /usr/share/wordlists/seclists/Discovery/Web-Content/common_directories.txt
 ```
@@ -84,11 +84,7 @@ feroxbuster -u http://10.129.1.254 -w /usr/share/wordlists/seclists/Discovery/We
 `/` > Normal welcoming web page.
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/2-web-page.png)
-`/uploads/` > No thing interesting.
-
-`/cgi-bin/` > Forbidden URL.
-
-`/backup/` > Starting point !
+`/browse.php` > Starting point !
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
 
