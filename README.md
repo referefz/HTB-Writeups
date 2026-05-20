@@ -15,7 +15,7 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 | :--- | :--- | :--- | :--- | :--- |
 | **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | *Coming Soon* |
 | **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
-| *(Next Machine)* | - | - | - | *Coming Soon* |
+| **Poison** | - | - | - | *Coming Soon* |
 
 
 ### 🎯 The Road to 100 HTB Machines
@@ -30,5 +30,3 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 > 
 ---
 Created with 💜 by **The Inquirer, Reef**
-
-*Last Updated: 2026-04-29*
