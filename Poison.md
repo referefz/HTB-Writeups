@@ -78,12 +78,20 @@ feroxbuster -u http://10.129.1.254 -w /usr/share/wordlists/seclists/Discovery/We
 [####################] - 2s        12/12      0s      found:2      errors:0
 ```
 
-***Cool, let's see each one:***
+***Cool, let's see both of them:***
 
 
-`/` > Normal welcoming web page.
+`/` > Web page for testing local PHP scripts.
 
-![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/2-web-page.png)
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/2-web-page.png)
+It also reveales some interesting PHP files we shouled test it:
+  * ini.php > Nothing interesting.
+  * info.php > Nothing interesting.
+  * phpinfo.php > Usefull to see.
+  * listfiles.php > THIS IS IT !!
+
+![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/3-listfiles.png)
+
 `/browse.php` > Starting point !
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Networked/3-backup.png)
