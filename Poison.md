@@ -59,7 +59,6 @@ PORT     STATE SERVICE VERSION
 Aggressive OS guesses: FreeBSD 11.0-RELEASE - 12.0-CURRENT (97%)
 ```
 
-
 <details>
   <summary>🟢 Task 1: How many TCP ports are accessible on Poison?</summary>
   <br>
