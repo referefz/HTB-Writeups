@@ -10,7 +10,7 @@
 | **Difficulty** | 🟠 Medium |
 | **OS** | 😈 FreeBSD |
 | **Mode** | 🧭 Guided Mode |
-| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: LFI & Log Poisoning](#-2-LFI & Log Poisoning) <br> [3: Initial Foothold (charix)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: LFI & Log Poisoning](#-2-lfi--log-poisoning) <br> [3: Initial Foothold (charix)](#-3-initial-foothold-charix) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
 | **Date** | 2026-05-20 |
 
 ---
