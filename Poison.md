@@ -110,7 +110,7 @@ I tested the `browse.php?file=` parameter for Local File Inclusion (LFI). By inj
 `/usr/local/www/apache24/data/browse.php`
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/6-current-dir.png)
-With the path traversal confirmed, I navigated back through the directories and easily read the master password file to enumerate users:
+With the path confirmed, I navigated back through the directories and easily read the master password file to enumerate users (Path Traversal vuln):
 ```URL
 http://10.129.1.254/browse.php?file=../../../../../etc/passwd
 ```
