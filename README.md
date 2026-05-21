@@ -15,7 +15,7 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 | :--- | :--- | :--- | :--- | :--- |
 | **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | *Coming Soon* |
 | **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
-| **Poison** | 😈 FreeBSD | 🟠 Medium | 🧭 Guided Mode | [View Report](./Poison.md) |
+| **Poison** | 😈 FreeBSD | 🟠 Medium | 🧭 Guided | [View Report](./Poison.md) |
 | *Challenge* | - | - | - | *Coming Soon* |
 
 
