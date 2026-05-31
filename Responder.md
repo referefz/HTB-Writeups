@@ -18,7 +18,7 @@
 
 ## 🎯 Executive Summary
 
-Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity. The attack chain on **Responder** begins with a **Local File Inclusion (LFI)** vulnerability in a PHP-based multilingual website running on Windows. The vulnerable `page` parameter was abused to inject a UNC path pointing to the attacker's machine running **Responder**, forcing the Windows server to authenticate via SMB and leak an **NTLMv2 hash** for the `Administrator` account. The hash was cracked offline using `john` with the `rockyou.txt` wordlist, yielding the plaintext password `badminton`. Finally, `evil-winrm` was used to establish a remote PowerShell session as Administrator, and the user flag was retrieved from Mike's Desktop.
+*Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity.* The attack chain on **Responder** begins with a **Local File Inclusion (LFI)** vulnerability in a PHP-based multilingual website running on Windows. The vulnerable `page` parameter was abused to inject a UNC path pointing to the attacker's machine running **Responder**, forcing the Windows server to authenticate via SMB and leak an **NTLMv2 hash** for the `Administrator` account. The hash was cracked offline using `john` with the `rockyou.txt` wordlist, yielding the plaintext password `badminton`. Finally, `evil-winrm` was used to establish a remote PowerShell session as Administrator, and the user flag was retrieved from Mike's Desktop.
 
 ---
 
@@ -39,32 +39,48 @@ Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by
 nmap -sS -sV -A -p- -T4 10.129.86.157
 ```
 
-> 🧐 **Findings:**
->
-> ```
-> PORT     STATE SERVICE    VERSION
-> 80/tcp   open  http       Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1)
-> 5985/tcp open  http       Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-> 7680/tcp open  tcpwrapped
->
-> OS Guess: Microsoft Windows 10 1903-21H1 (97%)
-> ```
->
-> | Port | Service | Notes |
-> | :--- | :--- | :--- |
-> | 80 | Apache / PHP 8.1.1 | Hosts the `unika.htb` web application |
-> | 5985 | WinRM | Allows remote PowerShell sessions via Evil-WinRM |
-> | 7680 | tcpwrapped | Not relevant |
+🧐 **Findings:**
+
+```
+Starting Nmap 7.95 ( https://nmap.org ) at 2026-04-18 19:24 EDT
+Stats: 0:05:15 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 99.99% done; ETC: 19:29 (0:00:00 remaining)
+Nmap scan report for 10.129.86.157
+Host is up (0.18s latency).
+Not shown: 65532 filtered tcp ports (no-response)
+PORT     STATE SERVICE    VERSION
+80/tcp   open  http       Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1)
+|_http-title: Site doesn't have a title (text/html; charset=UTF-8).
+|_http-server-header: Apache/2.4.52 (Win64) OpenSSL/1.1.1m PHP/8.1.1
+5985/tcp open  http       Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0
+7680/tcp open  tcpwrapped
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 10|2019 (97%)
+OS CPE: cpe:/o:microsoft:windows_10 cpe:/o:microsoft:windows_server_2019
+Aggressive OS guesses: Microsoft Windows 10 1903 - 21H1 (97%), Windows Server 2019 (91%), Microsoft Windows 10 1803 (89%)
+```
+
+**The scan revealed the following open ports:*
+
+**Port 80 (HTTP):** Running Apache httpd 2.4.52 with PHP/8.1.1 on a 64-bit Windows environment.
+
+**Port 5985 (HTTP):** Dedicated to Windows Remote Management (WinRM), running Microsoft HTTPAPI httpd 2.0.
+
+**Port 7680:** tcpwrapped.
+
 
 ### 1.2 Web Enumeration
 
-Added the target to `/etc/hosts` for hostname resolution:
+In our machine, Added the target to `/etc/hosts` for hostname resolution:
 
 ```bash
 echo "10.129.86.157 unika.htb" | sudo tee -a /etc/hosts
 ```
 
-Browsing to `http://unika.htb` revealed a business website with multi-language support. Switching the language changed the URL to:
+Then, we'll browsing to `http://unika.htb` revealed a business website with multi-language support. Switching the language changed the URL to:
 
 ```
 http://unika.htb/index.php?page=german.html
