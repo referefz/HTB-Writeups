@@ -1,27 +1,30 @@
 # 🚩 Responder - Write-up
 
+![Banner](https://github.com/referefz/HTB-Writeups/blob/main/images/Responder/0-banner.png)
+
+
 ## 📝 General Information
 
 | Attribute | Details |
 | :--- | :--- |
 | **Platform** | HackTheBox |
-| **Difficulty** | Very Easy |
+| **Difficulty** | ⚪ Very Easy |
 | **OS** | 🪟 Windows |
-| **Mode** | 🔴 Retired |
-| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold — LFI](#-2-initial-foothold--lfi) <br> [3: NTLM Hash Capture via Responder](#-3-ntlm-hash-capture-via-responder) <br> [4: Hash Cracking & Remote Access](#-4-hash-cracking--remote-access) <br> [5: Pwn3d !!](#-5-pwn3d-) |
+| **Mode** | 🧭 Guided Mode |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (Admin)](#-3-privilege-escalation-admin) <br> [4: Pwn3d !!](#-4-pwn3d-) |
 | **Date** | 2026-04-19 |
 
 ---
 
 ## 🎯 Executive Summary
 
-The attack chain on **Responder** begins with a **Local File Inclusion (LFI)** vulnerability in a PHP-based multilingual website running on Windows. The vulnerable `page` parameter was abused to inject a UNC path pointing to the attacker's machine running **Responder**, forcing the Windows server to authenticate via SMB and leak an **NTLMv2 hash** for the `Administrator` account. The hash was cracked offline using `john` with the `rockyou.txt` wordlist, yielding the plaintext password `badminton`. Finally, `evil-winrm` was used to establish a remote PowerShell session as Administrator, and the user flag was retrieved from Mike's Desktop.
+Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity. The attack chain on **Responder** begins with a **Local File Inclusion (LFI)** vulnerability in a PHP-based multilingual website running on Windows. The vulnerable `page` parameter was abused to inject a UNC path pointing to the attacker's machine running **Responder**, forcing the Windows server to authenticate via SMB and leak an **NTLMv2 hash** for the `Administrator` account. The hash was cracked offline using `john` with the `rockyou.txt` wordlist, yielding the plaintext password `badminton`. Finally, `evil-winrm` was used to establish a remote PowerShell session as Administrator, and the user flag was retrieved from Mike's Desktop.
 
 ---
 
 ## 🛠️ Tools Used
 
-`nmap`, `Responder`, `john`, `evil-winrm`
+`Your mind and eyes!!`, `Nmap`, `Responder`, `John The Ripper`, `Evil-WinRM`
 
 ---
 
