@@ -13,21 +13,21 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 
 | Machine Name | OS | Difficulty | Mode | Write-up Link |
 | :--- | :--- | :--- | :--- | :--- |
-| **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | *Coming Soon* |
+| **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | [View Report](./Responder.md) |
 | **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
 | **Poison** | 😈 FreeBSD | 🟠 Medium | 🧭 Guided | [View Report](./Poison.md) |
 | *New Challenge* | - | - | - | *Coming Soon* |
 
 
-### 🎯 The Road to 100 HTB Machines
+### 🎯 The Road to Solve 100 HTB Machines
 ### 3 / 100
 
-### 📝 The Road to 100 HTB Reports
-### 2 / 100
+### 📝 The Road to Write 100 HTB Reports
+### 3 / 100
 
 ---
 
-> **Disclaimer:** All reports here are for educational purposes only. The goal is to document technical skills and understand how vulnerabilities work in order to better protect systems.
+> **Disclaimer:** All reports here are for educational purposes only. The goal is to document my technical skills and understand how vulnerabilities work in order to better protect systems.
 > 
 ---
 Created with 💜 by **The Inquirer, Reef**
