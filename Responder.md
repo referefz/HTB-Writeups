@@ -12,7 +12,7 @@
 | **OS** | 🪟 Windows |
 | **Mode** | 🧭 Guided Mode |
 | **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (Admin)](#-3-privilege-escalation-admin) <br> [4: Pwn3d !!](#-4-pwn3d-) |
-| **Date** | 2026-04-19 |
+| **Pwn Date** | 2026-04-19 |
 
 ---
 
