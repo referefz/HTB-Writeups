@@ -11,7 +11,7 @@
 | **OS** | 🐧 Linux |
 | **Mode** | 🧭 Guided Mode |
 | **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold](#-2-initial-foothold) <br> [3: Privilege Escalation (guly)](#-3-privilege-escalation-guly) <br> [4: Privilege Escalation (root)](#-4-privilege-escalation-root) <br> [5: Pwn3d !!](#-5-pwn3d-) |
-| **Date** | 2026-04-29 |
+| **Pwn Date** | 2026-04-29 |
 
 ---
 
