@@ -1,6 +1,6 @@
 # 🚩 Cap - Write-up
 
-![Banner](images/banner.png)
+![Banner](https://github.com/referefz/HTB-Writeups/blob/main/images/Cap/1-banner.png)
 
 ## General Information
 
@@ -10,15 +10,16 @@
 | **Difficulty** | 🟢 Easy |
 | **OS** | 🐧 Linux |
 | **Mode** | 🧭 Guided Mode |
-| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold (IDOR & FTP Credential Leak via PCAP)](#-2-initial-foothold-idor--ftp-credential-leak-via-pcap) <br> [3: Privilege Escalation (root)](#-3-privilege-escalation-root) <br> [4: Pwn3d !!](#-4-pwn3d-) |
+| **Sections** | [1: Reconnaissance & Enumeration](#-1-reconnaissance--enumeration) <br> [2: Initial Foothold (nathan)](#-2-initial-foothold-nathan) <br> [3: Privilege Escalation (root)](#-3-privilege-escalation-root) <br> [4: Pwn3d !!](#-4-pwn3d-) |
 | **Pwn Date** | 2026-06-27 |
 
 ---
 
 ## Executive Summary
 
-*Hello everyone!! This is Reef the Inquirer✨. Armed with patience and fueled by curiosity.*
-Cap turned out to be a textbook lesson in why you should never trust a sequential ID in a URL. A quick `nmap` sweep showed only the classic trio — FTP, SSH and HTTP — and the web app was a slick little "Security Snapshot" dashboard that let the logged-in user `Nathan` download a 5-second PCAP of his own network traffic. Bumping the numeric ID in `/data/{id}` down confirmed an Insecure Direct Object Reference (IDOR), and I let `Burp Suite`'s Intruder chew through a generated wordlist of IDs (`num.txt`) to mechanically prove that only **three** snapshots — `0`, `1` and `2` — actually exist on the server. Capture `0` turned out to be the juicy one: cracking it open in Wireshark handed me Nathan's FTP credentials in cleartext, which doubled as his SSH password too. From there it was a short hop: `getcap` revealed that `/usr/bin/python3.8` had been left with the `cap_setuid` capability, and GTFOBins had the one-liner ready to go — `setuid(0)` and pop straight into a root shell. Clean recon, one IDOR confirmed by fuzzing, one capability misconfig, full system compromise 🚩
+*Hello everyone!! This is Reef the Inquirer✨. Quick and easy! Cap was a straightforward machine that gave me a textbook lesson on danger of cap_setuid capability.*
+
+*A quick `nmap` sweep showed only the classic trio — FTP, SSH and HTTP — and the web app was a slick little "Security Snapshot" dashboard that let the logged-in user `Nathan` download a 5-second PCAP of his own network traffic. Bumping the numeric ID in `/data/{id}` down confirmed an Insecure Direct Object Reference (IDOR), and I let `Burp Suite`'s Intruder chew through a generated wordlist of IDs (`num.txt`) to mechanically prove that only **three** snapshots — `0`, `1` and `2` — actually exist on the server. Capture `0` turned out to be the juicy one: cracking it open in Wireshark handed me Nathan's FTP credentials in cleartext, which doubled as his SSH password too. From there it was a short hop: `getcap` revealed that `/usr/bin/python3.8` had been left with the `cap_setuid` capability, and GTFOBins had the one-liner ready to go — `setuid(0)` and pop straight into a root shell. Clean recon, one IDOR confirmed by fuzzing, one capability misconfig, full system compromise 🚩*
 
 ---
 
@@ -88,7 +89,7 @@ The moment I saw a literal incrementing integer sitting in the URL path, alarm b
 
 ---
 
-## 🚪 2: Initial Foothold (IDOR & FTP Credential Leak via PCAP)
+## 🚪 2: Initial Foothold (nathan)
 
 ### 2.1 Confirming the IDOR with Burp Suite Intruder
 
