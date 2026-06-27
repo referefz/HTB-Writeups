@@ -16,14 +16,15 @@ Here I place detailed reports for each machine I hacked, categorized by platform
 | **Responder** | 🐧 Linux | ⚪ Very Easy | 🧭 Guided | [View Report](./Responder.md) |
 | **Networked** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Networked.md) |
 | **Poison** | 😈 FreeBSD | 🟠 Medium | 🧭 Guided | [View Report](./Poison.md) |
+| **Cap** | 🐧 Linux | 🟢 Easy | 🧭 Guided | [View Report](./Cap.md) |
 | *New Challenge* | - | - | - | *Coming Soon* |
 
 
 ### 🎯 The Road to Solve 100 HTB Machines
-### 3 / 100
+### 4 / 100
 
 ### 📝 The Road to Write 100 HTB Reports
-### 3 / 100
+### 4 / 100
 
 ---
 
