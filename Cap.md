@@ -19,7 +19,7 @@
 
 *Hello everyone!! This is Reef the Inquirer✨. Quick and easy! Cap was a straightforward machine that gave me a textbook lesson on danger of cap_setuid capability.*
 
-*A web page was contains a "Security Snapshot" dashboard that let the logged-in user `Nathan` download a 5-second PCAP of his own network traffic. Bumping the numeric ID in `/data/{id}` down confirmed an Insecure Direct Object Reference (IDOR), and I let `Burp Suite`'s Intruder chew through a generated wordlist of IDs (`num.txt`) to see only snapshots actually exist on the server. Capture `0` turned out to be the juicy one: cracking it open in Wireshark handed me Nathan's FTP credentials in cleartext, which doubled as his SSH password too. From there it was a short hop: `getcap` revealed that `/usr/bin/python3.8` had been left with the `cap_setuid` capability, and GTFOBins had the one-liner ready to go — `setuid(0)` and pop straight into a root shell. Clean recon, one IDOR confirmed by fuzzing, one capability misconfig, full system compromise 🚩*
+*A web page contained a "Security Snapshot" dashboard that let the logged-in user `Nathan` download a 5-second PCAP of his own network traffic. Bumping the numeric ID in `/data/{id}` down confirmed an Insecure Direct Object Reference (IDOR), and I let `Burp Suite`'s Intruder chew through a generated wordlist of IDs (`num.txt`) to see only snapshots actually exist on the server. Capture `0` turned out to be the juicy one: cracking it open in Wireshark handed me Nathan's FTP credentials in cleartext, which doubled as his SSH password too. From there, `getcap` revealed that `/usr/bin/python3.8` had been left with the `cap_setuid` capability, and GTFOBins had the one-liner ready to go into a root shell! 🚩*
 
 ---
 
